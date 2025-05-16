@@ -3,8 +3,8 @@ package go_praxis
 // ----------pre generate-------------------------
 // https://doc.praxiscashier.com/integration_docs/latest/cashier_api/cashier
 
-type CashierRequest struct {
-	MerchantId     string      `json:"merchant_id"`
+type PraxisCashierRequest struct {
+	MerchantId     string      `json:"merchant_id"` //不需要传
 	ApplicationKey string      `json:"application_key"`
 	Intent         string      `json:"intent"`
 	Currency       string      `json:"currency"`
@@ -35,11 +35,11 @@ type CashierRequest struct {
 	Variable2 string      `json:"variable2"` //optional
 	Variable3 interface{} `json:"variable3"` //optional
 
-	Version   string `json:"version"`
+	Version   string `json:"version"` //不需要传
 	Timestamp int    `json:"timestamp"`
 }
 
-type CashierResponse struct {
+type PraxisCashierResponse struct {
 	Status      int    `json:"status"`
 	Description string `json:"description"`
 	RedirectUrl string `json:"redirect_url"`
@@ -75,7 +75,7 @@ type CashierResponse struct {
 // ----------deposit callback-------------------------
 // https://doc.praxiscashier.com/integration_docs/latest/webhooks/notification
 
-type CallbackRequest struct {
+type PraxisCashierBackReq struct {
 	MerchantId     string  `json:"merchant_id"`
 	ApplicationKey string  `json:"application_key"`
 	ConversionRate float64 `json:"conversion_rate"`

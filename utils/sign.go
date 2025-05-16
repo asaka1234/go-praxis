@@ -1,8 +1,9 @@
-package go_praxis
+package utils
 
 import (
 	"crypto/sha512"
 	"encoding/hex"
+	"github.com/asaka1234/go-praxis"
 	"github.com/mitchellh/mapstructure"
 	"github.com/samber/lo"
 	"github.com/spf13/cast"
@@ -20,7 +21,7 @@ func getRequestSignatureList() []string {
 	}
 }
 
-func getConcatenatedString(req CashierRequest, requestSignatureList []string) string {
+func getConcatenatedString(req go_praxis.PraxisCashierRequest, requestSignatureList []string) string {
 
 	// 将结构体转换为map
 	var result map[string]interface{}
@@ -48,7 +49,7 @@ func generateSignature(input string) string {
 }
 
 // export ========>
-func CalSign(req CashierRequest) string {
+func CalSign(req go_praxis.PraxisCashierRequest) string {
 	raw := getConcatenatedString(req, getRequestSignatureList())
 	return generateSignature(raw)
 }
