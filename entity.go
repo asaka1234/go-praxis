@@ -178,7 +178,7 @@ type PraxisBackReqCardData struct {
 
 // =============
 // 返回给三方的
-type PraxisDepositBackRsp struct {
+type PraxisBackRsp struct {
 	Status      *int   `json:"status"` // Using pointer to allow null/nil
 	Description string `json:"description"`
 	Version     string `json:"version"`
