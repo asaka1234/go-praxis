@@ -6,8 +6,11 @@ import (
 )
 
 type Client struct {
-	MerchantID string
-	ApiVersion string
+	MerchantID     string
+	MerchantKey    string
+	ApplicationKey string
+	ApiVersion     string
+	ApiLocale      string
 
 	BaseURL string
 
@@ -15,12 +18,16 @@ type Client struct {
 	logger   utils.Logger
 }
 
-func NewClient(logger utils.Logger, merchantID string, apiVersion string, baseURL string) *Client {
+func NewClient(logger utils.Logger, merchantID string, merchantKey, applicationKey, apiVersion, apiLocale string, baseURL string) *Client {
 	return &Client{
-		MerchantID: merchantID,
-		ApiVersion: apiVersion,
-		BaseURL:    baseURL,
-		ryClient:   resty.New(), //client实例
-		logger:     logger,
+		MerchantID:     merchantID,
+		MerchantKey:    merchantKey,
+		ApplicationKey: applicationKey,
+		ApiVersion:     apiVersion,
+		ApiLocale:      apiLocale,
+		BaseURL:        baseURL,
+
+		ryClient: resty.New(), //client实例
+		logger:   logger,
 	}
 }

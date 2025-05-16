@@ -12,7 +12,9 @@ func (cli *Client) PreGen(req PraxisCashierRequest) (*PraxisCashierResponse, err
 
 	//赋值
 	req.MerchantId = cli.MerchantID
+	req.ApplicationKey = cli.ApplicationKey
 	req.Version = cli.ApiVersion
+	req.Locale = cli.ApiLocale
 
 	signStr := utils.CalSign(req) //计算请求的签名
 
