@@ -6,9 +6,9 @@ import (
 )
 
 type Client struct {
-	MerchantID     string
-	MerchantKey    string
-	ApplicationKey string
+	MerchantID     string // merchantId
+	MerchantKey    string // accessKey
+	ApplicationKey string // merchantSecret
 	ApiVersion     string
 	ApiLocale      string
 
