@@ -179,7 +179,7 @@ type PraxisBackReqCardData struct {
 // =============
 // 返回给三方的
 type PraxisBackResp struct {
-	Status      *int   `json:"status"` // Using pointer to allow null/nil
+	Status      int    `json:"status"`
 	Description string `json:"description"`
 	Version     string `json:"version"`
 	Timestamp   int64  `json:"timestamp"`
