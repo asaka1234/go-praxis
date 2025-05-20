@@ -12,9 +12,9 @@ func (cli *Client) Deposit(req PraxisDepositReq) (*PraxisDepositRsp, error) {
 	rawURL := cli.BaseURL
 
 	//拿到签名的参数
-	requestParams := cli.createRequestParams(req)
-	requestSignatureList := cli.getRequestSignatureList()
-	gtAuthenticationHeader := utils.GetGtAuthenticationHeader(requestParams, requestSignatureList, cli.MerchantKey)
+	requestParams := cli.createDepositRequestParams(req)
+	bsUtil := utils.NewBuildSignatureUtils()
+	gtAuthentication := bsUtil.GetGtAuthentication(requestParams, cli.MerchantSecret, utils.SignTypeSendReq)
 
 	//返回值会放到这里
 	var result PraxisDepositRsp
@@ -23,7 +23,7 @@ func (cli *Client) Deposit(req PraxisDepositReq) (*PraxisDepositRsp, error) {
 		SetCloseConnection(true).
 		R().
 		SetBody(requestParams).
-		SetHeaders(getAuthHeaders(gtAuthenticationHeader)).
+		SetHeaders(getAuthHeaders(gtAuthentication)).
 		SetResult(&result).
 		Post(rawURL)
 
@@ -36,12 +36,12 @@ func (cli *Client) Deposit(req PraxisDepositReq) (*PraxisDepositRsp, error) {
 	return &result, err
 }
 
-func (cli *Client) createRequestParams(req PraxisDepositReq) map[string]interface{} {
+func (cli *Client) createDepositRequestParams(req PraxisDepositReq) map[string]interface{} {
 	params := make(map[string]interface{})
 
 	params["merchant_id"] = cli.MerchantID // Assuming these are package-level variables
 	params["application_key"] = cli.ApplicationKey
-	params["intent"] = req.Intent
+	params["intent"] = IntentTypePayment //req.Intent //枚举: payment,withdrawal,authorization (这里完全可以直接写死)
 	params["currency"] = req.Currency
 	params["amount"] = req.Amount
 	params["cid"] = req.Cid
@@ -58,15 +58,4 @@ func (cli *Client) createRequestParams(req PraxisDepositReq) map[string]interfac
 	params["timestamp"] = time.Now().Unix() // Unix timestamp in seconds
 
 	return params
-}
-
-func (cli *Client) getRequestSignatureList() []string {
-	return []string{
-		"merchant_id",
-		"application_key",
-		"timestamp",
-		"intent",
-		"cid",
-		"order_id",
-	}
 }

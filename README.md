@@ -8,6 +8,12 @@ Env
 sandbox: https://pci-gw-test.praxispay.com/cashier/cashie
 Live: https://gw.praxisgate.com/cashier/cashier
 
+
+鉴权
+==============
+对请求参数签名后,放到了Gt-Authentication 这个header里
+
+
 Comment
 ===============
 1. both support deposit && withdrawl

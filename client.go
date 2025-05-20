@@ -7,7 +7,7 @@ import (
 
 type Client struct {
 	MerchantID     string // merchantId
-	MerchantKey    string // accessKey
+	MerchantSecret string // accessKey
 	ApplicationKey string // merchantSecret
 	ApiVersion     string
 	ApiLocale      string
@@ -18,10 +18,10 @@ type Client struct {
 	logger   utils.Logger
 }
 
-func NewClient(logger utils.Logger, merchantID string, merchantKey, applicationKey, apiVersion, apiLocale string, baseURL string) *Client {
+func NewClient(logger utils.Logger, merchantID string, merchantSecret, applicationKey, apiVersion, apiLocale string, baseURL string) *Client {
 	return &Client{
 		MerchantID:     merchantID,
-		MerchantKey:    merchantKey,
+		MerchantSecret: merchantSecret,
 		ApplicationKey: applicationKey,
 		ApiVersion:     apiVersion,
 		ApiLocale:      apiLocale,

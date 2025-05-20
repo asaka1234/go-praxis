@@ -6,7 +6,7 @@ const (
 
 	//参数
 	MERCHANT_ID     = "hiahaihaihaihaihaiahiahihaih"
-	MERCHANT_KEY    = "hiahaihaihaihaihaiahiahihaih"
+	MERCHANT_SECRET = "hiahaihaihaihaihaiahiahihaih"
 	APPLICATION_KEY = "AAA"
 	API_VERSION     = "1.3"
 	API_LOCALE      = "en-GB"

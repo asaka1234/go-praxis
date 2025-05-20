@@ -13,8 +13,9 @@ func (cli *Client) Withdraw(req PraxisWithdrawReq) (*PraxisWithdrawResp, error) 
 
 	//拿到签名的参数
 	requestParams := cli.CreateWithdrawRequestParams(req)
-	requestSignatureList := cli.getRequestSignatureList()
-	gtAuthenticationHeader := utils.GetGtAuthenticationHeader(requestParams, requestSignatureList, cli.MerchantKey)
+
+	bsUtil := utils.NewBuildSignatureUtils()
+	gtAuthentication := bsUtil.GetGtAuthentication(requestParams, cli.MerchantSecret, utils.SignTypeSendReq)
 
 	//返回值会放到这里
 	var result PraxisWithdrawResp
@@ -23,7 +24,7 @@ func (cli *Client) Withdraw(req PraxisWithdrawReq) (*PraxisWithdrawResp, error) 
 		SetCloseConnection(true).
 		R().
 		SetBody(requestParams).
-		SetHeaders(getAuthHeaders(gtAuthenticationHeader)).
+		SetHeaders(getAuthHeaders(gtAuthentication)).
 		SetResult(&result).
 		Post(rawURL)
 
@@ -41,7 +42,7 @@ func (cli *Client) CreateWithdrawRequestParams(req PraxisWithdrawReq) map[string
 
 	params["merchant_id"] = cli.MerchantID
 	params["application_key"] = cli.ApplicationKey
-	params["intent"] = req.Intent
+	params["intent"] = IntentTypeWithdrawal //req.Intent
 	params["currency"] = req.Currency
 	params["amount"] = req.Amount
 	params["cid"] = req.Cid
