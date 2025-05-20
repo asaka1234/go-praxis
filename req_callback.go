@@ -3,7 +3,6 @@ package go_praxis
 import (
 	"errors"
 	"github.com/asaka1234/go-praxis/utils"
-	"time"
 )
 
 //https://doc.praxiscashier.com/integration_docs/latest/webhooks/notification
@@ -34,7 +33,7 @@ func (cli *Client) CreateCashierCallbackRequestParams(req PraxisBackReq) map[str
 
 	params["merchant_id"] = cli.MerchantID // Assuming these are package-level variables
 	params["application_key"] = cli.ApplicationKey
-	params["timestamp"] = time.Now().Unix() // Unix timestamp in seconds
+	params["timestamp"] = req.Timestamp //time.Now().Unix() // Unix timestamp in seconds
 	params["customer_token"] = req.Customer.CustomerToken
 	params["order_id"] = req.Session.OrderID
 	params["tid"] = req.Transaction.Tid
@@ -61,6 +60,6 @@ func (cli *Client) GenerateCallbackRespGtAuthentication(resp PraxisBackResp) str
 func createCashierCallbackResponseParams(resp PraxisBackResp) map[string]interface{} {
 	params := make(map[string]interface{})
 	params["status"] = resp.Status
-	params["timestamp"] = time.Now().Unix()
+	params["timestamp"] = resp.Timestamp
 	return params
 }
