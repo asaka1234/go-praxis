@@ -3,6 +3,7 @@ package go_praxis
 import (
 	"crypto/tls"
 	"github.com/asaka1234/go-praxis/utils"
+	"github.com/mitchellh/mapstructure"
 	"time"
 )
 
@@ -42,13 +43,18 @@ func (cli *Client) CreateWithdrawRequestParams(req PraxisWithdrawReq) map[string
 
 	params["merchant_id"] = cli.MerchantID
 	params["application_key"] = cli.ApplicationKey
-	params["intent"] = IntentTypeWithdrawal //req.Intent
+	params["intent"] = string(IntentTypeWithdrawal) //req.Intent
 	params["currency"] = req.Currency
 	params["amount"] = req.Amount
 	params["cid"] = req.Cid
 	params["locale"] = cli.ApiLocale // Assuming Locale is a package constant
 	params["customer_token"] = req.CustomerToken
-	params["customer_data"] = req.CustomerData
+
+	// struct → map
+	var userMap map[string]interface{}
+	mapstructure.Decode(req.CustomerData, &userMap)
+	params["customer_data"] = userMap //req.CustomerData //把这个struct转为map
+
 	params["payment_method"] = req.PaymentMethod
 	params["gateway"] = req.Gateway
 	params["validation_url"] = req.ValidationURL

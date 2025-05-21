@@ -3,7 +3,8 @@ package utils
 import (
 	"crypto/sha512"
 	"encoding/hex"
-	"strconv"
+	"fmt"
+	"github.com/spf13/cast"
 )
 
 type SignType int //签名的具体点位
@@ -79,16 +80,7 @@ func (h *BuildSignatureUtils) GetConcatenatedString(data map[string]interface{},
 	//------------拼凑签名的原始字符串-------------------
 	for _, key := range keyList {
 		if val, exists := data[key]; exists && val != nil {
-			switch v := val.(type) {
-			case string:
-				concatenatedString += v
-			case int:
-				concatenatedString += strconv.Itoa(v)
-			case int64:
-				concatenatedString += strconv.FormatInt(v, 10)
-			case bool:
-				concatenatedString += strconv.FormatBool(v)
-			}
+			concatenatedString += cast.ToString(data[key])
 		}
 	}
 	return concatenatedString
@@ -101,6 +93,7 @@ func (h *BuildSignatureUtils) GetGtAuthentication(request map[string]interface{}
 
 	// Concatenate Merchant Secret Key with response params
 	concatenatedString += merchantSecret
+	fmt.Printf("concatenatedString======>%s\n", concatenatedString)
 
 	// Generate HASH of concatenated string
 	signature := h.GenerateSignature(concatenatedString)

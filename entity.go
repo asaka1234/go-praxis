@@ -10,32 +10,33 @@ type PraxisDepositReq struct {
 	//Locale          string                     `json:"locale"`
 	//Version         string                     `json:"version"`
 	//Intent          string `json:"intent"`           //枚举: payment,withdrawal,authorization //这里sdk直接写死
-	Currency        string `json:"currency"`         //币种
-	Amount          int    `json:"amount"`           //这个是用 分 为单位的. 有的currency是100分,有的1000分. 具体要看 https://doc.praxiscashier.com/integration_docs/latest/overview/data_formats#currency_fraction
-	Cid             string `json:"cid"`              //Unique customer id in your system. 业务系统里的唯一客户id
-	NotificationURL string `json:"notification_url"` //回调通知接口
-	ReturnURL       string `json:"return_url"`       //前端重定向地址
-	OrderID         string `json:"order_id"`         //业务系统内的唯一订单id
-	Timestamp       int64  `json:"timestamp"`        //seconds
+	Currency        string                    `json:"currency"`         //币种
+	Amount          int                       `json:"amount"`           //这个是用 分 为单位的. 有的currency是100分,有的1000分. 具体要看 https://doc.praxiscashier.com/integration_docs/latest/overview/data_formats#currency_fraction
+	Cid             string                    `json:"cid"`              //Unique customer id in your system. 业务系统里的唯一客户id
+	NotificationURL string                    `json:"notification_url"` //回调通知接口
+	ReturnURL       string                    `json:"return_url"`       //前端重定向地址
+	OrderID         string                    `json:"order_id"`         //业务系统内的唯一订单id
+	CustomerData    PraxisDepositCustomerData `json:"customer_data"`    //这个也是必填的
+	//Timestamp       int64                     `json:"timestamp"`        //seconds
 	//option
-	CustomerToken string                     `json:"customer_token"` //客户身份id的HASH
-	CustomerData  *PraxisDepositCustomerData `json:"customer_data"`
-	PaymentMethod string                     `json:"payment_method"`
-	Gateway       string                     `json:"gateway"`
-	ValidationURL string                     `json:"validation_url"`
+	CustomerToken string `json:"customer_token"` //客户身份id的HASH
+	PaymentMethod string `json:"payment_method"`
+	Gateway       string `json:"gateway"`
+	ValidationURL string `json:"validation_url"`
 }
 
 type PraxisDepositCustomerData struct {
-	Country   string `json:"country"`
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
-	DOB       string `json:"dob"` // Date of birth (format: YYYY-MM-DD)
-	Email     string `json:"email"`
-	Phone     string `json:"phone"`   // Should include country code
-	Zip       string `json:"zip"`     // Postal/ZIP code
-	State     string `json:"state"`   // State/Province
-	City      string `json:"city"`    // City
-	Address   string `json:"address"` // Street address
+	Country   string `json:"country" mapstructure:"country"`
+	FirstName string `json:"first_name" mapstructure:"first_name"`
+	LastName  string `json:"last_name" mapstructure:"last_name"`
+	DOB       string `json:"dob" mapstructure:"dob"` // Date of birth (format: YYYY-MM-DD)
+	Email     string `json:"email" mapstructure:"email"`
+	Phone     string `json:"phone" mapstructure:"phone"`     // Should include country code
+	Zip       string `json:"zip" mapstructure:"zip"`         // Postal/ZIP code
+	State     string `json:"state" mapstructure:"state"`     // State/Province
+	City      string `json:"city" mapstructure:"city"`       // City
+	Address   string `json:"address" mapstructure:"address"` // Street address
+	Profile   int    `json:"profile" mapstructure:"profile"` // Street address
 }
 
 type PraxisDepositCardData struct {
@@ -43,8 +44,6 @@ type PraxisDepositCardData struct {
 	CardExp    string `json:"card_exp"`    // Encrypted expiration date (e.g., "WI8V4bE5/l8fIhUv6aMO8w==")
 	CVV        string `json:"cvv"`         // Encrypted CVV code
 }
-
-//--------------------------------------------------------
 
 type PraxisDepositRsp struct {
 	Status      int                        `json:"status"` //0是正确， 逻辑错误>0,系统错误<0
@@ -65,20 +64,20 @@ type PraxisWithdrawReq struct {
 	//Locale          string                     `json:"locale"`
 	//Version         string                     `json:"version"`
 	//Intent          string                     `json:"intent"` //这里sdk直接写死
-	Currency        string                     `json:"currency"`
-	Amount          int                        `json:"amount"`
-	Balance         int                        `json:"balance"`
-	Cid             string                     `json:"cid"`
-	CustomerToken   string                     `json:"customer_token"`
-	CustomerData    *PraxisDepositCustomerData `json:"customer_data"`
-	CardData        *PraxisDepositCardData     `json:"card_data"`
-	PaymentMethod   string                     `json:"payment_method"`
-	Gateway         string                     `json:"gateway"`
-	ValidationURL   string                     `json:"validation_url"`
-	NotificationURL string                     `json:"notification_url"`
-	ReturnURL       string                     `json:"return_url"`
-	OrderID         string                     `json:"order_id"`
-	Timestamp       int64                      `json:"timestamp"`
+	Currency        string                    `json:"currency"`         //币种
+	Amount          int                       `json:"amount"`           //这个是用 分 为单位的. 有的currency是100分,有的1000分. 具体要看 https://doc.praxiscashier.com/integration_docs/latest/overview/data_formats#currency_fraction
+	Cid             string                    `json:"cid"`              //Unique customer id in your system. 业务系统里的唯一客户id
+	NotificationURL string                    `json:"notification_url"` //回调通知接口
+	ReturnURL       string                    `json:"return_url"`       //前端重定向地址
+	OrderID         string                    `json:"order_id"`         //业务系统内的唯一订单id
+	CustomerData    PraxisDepositCustomerData `json:"customer_data"`    //这个也是必填的
+	//Timestamp       int64                     `json:"timestamp"` //second
+	Balance       int                    `json:"balance"`
+	CustomerToken string                 `json:"customer_token"`
+	CardData      *PraxisDepositCardData `json:"card_data"`
+	PaymentMethod string                 `json:"payment_method"`
+	Gateway       string                 `json:"gateway"`
+	ValidationURL string                 `json:"validation_url"`
 }
 
 type PraxisWithdrawResp struct {

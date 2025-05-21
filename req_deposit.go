@@ -3,6 +3,7 @@ package go_praxis
 import (
 	"crypto/tls"
 	"github.com/asaka1234/go-praxis/utils"
+	"github.com/mitchellh/mapstructure"
 	"time"
 )
 
@@ -27,8 +28,6 @@ func (cli *Client) Deposit(req PraxisDepositReq) (*PraxisDepositRsp, error) {
 		SetResult(&result).
 		Post(rawURL)
 
-	//fmt.Printf("accessToken: %+v\n", resp)
-
 	if err != nil {
 		return nil, err
 	}
@@ -41,13 +40,18 @@ func (cli *Client) createDepositRequestParams(req PraxisDepositReq) map[string]i
 
 	params["merchant_id"] = cli.MerchantID // Assuming these are package-level variables
 	params["application_key"] = cli.ApplicationKey
-	params["intent"] = IntentTypePayment //req.Intent //枚举: payment,withdrawal,authorization (这里完全可以直接写死)
+	params["intent"] = string(IntentTypePayment) //req.Intent //枚举: payment,withdrawal,authorization (这里完全可以直接写死)
 	params["currency"] = req.Currency
 	params["amount"] = req.Amount
 	params["cid"] = req.Cid
 	params["locale"] = cli.ApiLocale
 	params["customer_token"] = req.CustomerToken
-	params["customer_data"] = req.CustomerData
+
+	// struct → map
+	var userMap map[string]interface{}
+	mapstructure.Decode(req.CustomerData, &userMap)
+	params["customer_data"] = userMap //req.CustomerData //把这个struct转为map
+
 	params["payment_method"] = req.PaymentMethod
 	params["gateway"] = req.Gateway
 	params["validation_url"] = req.ValidationURL
