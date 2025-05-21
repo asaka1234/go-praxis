@@ -53,7 +53,7 @@ type PraxisDepositRsp struct {
 	Version     string                     `json:"version"`
 	Timestamp   int64                      `json:"timestamp"` //seconds
 	//option
-	RedirectURL string `json:"redirect_url"`
+	RedirectURL string `json:"redirect_url"` //是用户要付款的psp页面的url
 }
 
 //---------------------------------------------
