@@ -127,26 +127,26 @@ type PraxisBackReq struct {
 }
 
 type PraxisBackReqCustomerData struct {
-	CustomerToken     string `json:"customer_token"`
+	CustomerToken     string `json:"customer_token"` //must
 	FirstName         string `json:"first_name"`
 	LastName          string `json:"last_name"`
-	AVSAlert          *int   `json:"avs_alert,omitempty"`          // Using pointer to allow null/nil
-	VerificationAlert string `json:"verification_alert,omitempty"` // omitempty if null
+	AVSAlert          *int   `json:"avs_alert,omitempty"`          // 地址校验收通过 0成功 1失败
+	VerificationAlert *int   `json:"verification_alert,omitempty"` // 客户验证是否通过  0通过
 }
 
 type PraxisBackReqSessionData struct {
-	AuthToken         string  `json:"auth_token"`
-	Intent            string  `json:"intent"`
-	SessionStatus     string  `json:"session_status"`
-	OrderID           string  `json:"order_id"`
-	Currency          string  `json:"currency"`
-	Amount            float64 `json:"amount"`
-	ConversionRate    float64 `json:"conversion_rate"`
-	ProcessedCurrency string  `json:"processed_currency"`
-	ProcessedAmount   float64 `json:"processed_amount"`
-	PaymentMethod     string  `json:"payment_method"`
-	Gateway           string  `json:"gateway"`
-	Pin               string  `json:"pin,omitempty"`       // omitempty if empty
+	AuthToken         string  `json:"auth_token"`     //must
+	Intent            string  `json:"intent"`         //must
+	SessionStatus     string  `json:"session_status"` //must
+	OrderID           string  `json:"order_id"`       //must
+	Currency          string  `json:"currency"`       //must
+	Amount            float64 `json:"amount,omitempty"`
+	ConversionRate    float64 `json:"conversion_rate,omitempty"`
+	ProcessedCurrency string  `json:"processed_currency"` //must
+	ProcessedAmount   float64 `json:"processed_amount"`   //must
+	PaymentMethod     string  `json:"payment_method,omitempty"`
+	Gateway           string  `json:"gateway,omitempty"`
+	Cid               string  `json:"cid"`                 //must
 	Variable1         string  `json:"variable1,omitempty"` // omitempty if empty
 	Variable2         string  `json:"variable2,omitempty"` // omitempty if empty
 	Variable3         string  `json:"variable3,omitempty"` // omitempty if empty
@@ -155,15 +155,15 @@ type PraxisBackReqSessionData struct {
 type PraxisBackReqTransactionData struct {
 	TransactionType   string                 `json:"transaction_type"`
 	TransactionStatus string                 `json:"transaction_status"`
-	Tid               string                 `json:"tid"`
+	Tid               int                    `json:"tid"`
 	TransactionID     string                 `json:"transaction_id"`
 	Currency          string                 `json:"currency"`
-	Amount            string                 `json:"amount"`
-	ConversionRate    string                 `json:"conversion_rate"`
+	Amount            int                    `json:"amount"`
+	ConversionRate    float64                `json:"conversion_rate"` //TODO 文档中有冲突,说明是string,例子是float
 	ProcessedCurrency string                 `json:"processed_currency"`
-	ProcessedAmount   string                 `json:"processed_amount"`
-	Fee               string                 `json:"fee"`
-	FeeIncluded       string                 `json:"fee_included"`
+	ProcessedAmount   int                    `json:"processed_amount"`
+	Fee               int                    `json:"fee"`
+	FeeIncluded       int                    `json:"fee_included"`
 	FeeType           string                 `json:"fee_type"`
 	PaymentMethod     string                 `json:"payment_method"`
 	PaymentProcessor  string                 `json:"payment_processor"`

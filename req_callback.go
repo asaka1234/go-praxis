@@ -2,6 +2,7 @@ package go_praxis
 
 import (
 	"errors"
+	"fmt"
 	"github.com/asaka1234/go-praxis/utils"
 )
 
@@ -20,6 +21,7 @@ func (cli *Client) CashierCallback(req PraxisBackReq, sign string, processor fun
 	signSelf := bsUtil.GetGtAuthentication(requestParams, cli.MerchantSecret, utils.SignTypeCallbackReq)
 	//对比下签名正确性
 	if signSelf != sign {
+		fmt.Printf("sign is not equal, sign:%s, signSelf:%s\n", sign, signSelf)
 		return errors.New("sign is error!")
 	}
 
@@ -33,7 +35,7 @@ func (cli *Client) CreateCashierCallbackRequestParams(req PraxisBackReq) map[str
 
 	params["merchant_id"] = cli.MerchantID // Assuming these are package-level variables
 	params["application_key"] = cli.ApplicationKey
-	params["timestamp"] = req.Timestamp //time.Now().Unix() // Unix timestamp in seconds
+	params["timestamp"] = req.Timestamp //praxis传过来的.
 	params["customer_token"] = req.Customer.CustomerToken
 	params["order_id"] = req.Session.OrderID
 	params["tid"] = req.Transaction.Tid
