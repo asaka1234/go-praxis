@@ -14,6 +14,11 @@ Live: https://gw.praxisgate.com/cashier/cashier
 对请求参数签名后,放到了Gt-Authentication 这个header里
 
 
+回调地址
+==============
+在下单时，参数里传递进来的(动态可修改)
+
+
 Comment
 ===============
 1. both support deposit && withdrawl
