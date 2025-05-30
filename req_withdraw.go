@@ -58,8 +58,8 @@ func (cli *Client) CreateWithdrawRequestParams(req PraxisWithdrawReq) map[string
 	params["payment_method"] = req.PaymentMethod
 	params["gateway"] = req.Gateway
 	params["validation_url"] = req.ValidationURL
-	params["notification_url"] = req.NotificationURL
-	params["return_url"] = req.ReturnURL
+	params["notification_url"] = cli.Params.WithdrawBackUrl //req.NotificationURL
+	params["return_url"] = cli.Params.WithdrawFeBackUrl     //req.ReturnURL
 	params["order_id"] = req.OrderID
 	params["version"] = cli.Params.ApiVersion // Assuming APIVersion is a package constant
 	params["timestamp"] = time.Now().Unix()   // Unix timestamp in seconds

@@ -8,6 +8,11 @@ type PraxisInitParams struct {
 	ApiLocale      string `json:"apiLocale" mapstructure:"apiLocale" config:"apiLocale"`
 
 	BaseUrl string `json:"baseUrl" mapstructure:"baseUrl" config:"baseUrl"`
+
+	DepositBackUrl    string `json:"depositBackUrl" mapstructure:"depositBackUrl" config:"depositBackUrl"`
+	DepositFeBackUrl  string `json:"depositFeBackUrl" mapstructure:"depositFeBackUrl" config:"depositFeBackUrl"`
+	WithdrawBackUrl   string `json:"withdrawBackUrl" mapstructure:"withdrawBackUrl" config:"withdrawBackUrl"`
+	WithdrawFeBackUrl string `json:"WithdrawFeBackUrl" mapstructure:"WithdrawFeBackUrl" config:"WithdrawFeBackUrl"`
 }
 
 // ----------pre generate-------------------------
@@ -20,13 +25,13 @@ type PraxisDepositReq struct {
 	//Locale          string                     `json:"locale"`
 	//Version         string                     `json:"version"`
 	//Intent          string `json:"intent"`           //枚举: payment,withdrawal,authorization //这里sdk直接写死
-	Currency        string                    `json:"currency"`         //币种
-	Amount          int                       `json:"amount"`           //这个是用 分 为单位的. 有的currency是100分,有的1000分. 具体要看 https://doc.praxiscashier.com/integration_docs/latest/overview/data_formats#currency_fraction
-	Cid             string                    `json:"cid"`              //Unique customer id in your system. 业务系统里的唯一客户id
-	NotificationURL string                    `json:"notification_url"` //回调通知接口
-	ReturnURL       string                    `json:"return_url"`       //前端重定向地址
-	OrderID         string                    `json:"order_id"`         //业务系统内的唯一订单id
-	CustomerData    PraxisDepositCustomerData `json:"customer_data"`    //这个也是必填的
+	Currency string `json:"currency"` //币种
+	Amount   int    `json:"amount"`   //这个是用 分 为单位的. 有的currency是100分,有的1000分. 具体要看 https://doc.praxiscashier.com/integration_docs/latest/overview/data_formats#currency_fraction
+	Cid      string `json:"cid"`      //Unique customer id in your system. 业务系统里的唯一客户id
+	//NotificationURL string                    `json:"notification_url"` //回调通知接口
+	//ReturnURL       string                    `json:"return_url"`       //前端重定向地址
+	OrderID      string                    `json:"order_id"`      //业务系统内的唯一订单id
+	CustomerData PraxisDepositCustomerData `json:"customer_data"` //这个也是必填的
 	//Timestamp       int64                     `json:"timestamp"`        //seconds
 	//option
 	CustomerToken string `json:"customer_token"` //客户身份id的HASH
@@ -74,13 +79,13 @@ type PraxisWithdrawReq struct {
 	//Locale          string                     `json:"locale"`
 	//Version         string                     `json:"version"`
 	//Intent          string                     `json:"intent"` //这里sdk直接写死
-	Currency        string                    `json:"currency"`         //币种
-	Amount          int                       `json:"amount"`           //这个是用 分 为单位的. 有的currency是100分,有的1000分. 具体要看 https://doc.praxiscashier.com/integration_docs/latest/overview/data_formats#currency_fraction
-	Cid             string                    `json:"cid"`              //Unique customer id in your system. 业务系统里的唯一客户id
-	NotificationURL string                    `json:"notification_url"` //回调通知接口
-	ReturnURL       string                    `json:"return_url"`       //前端重定向地址
-	OrderID         string                    `json:"order_id"`         //业务系统内的唯一订单id
-	CustomerData    PraxisDepositCustomerData `json:"customer_data"`    //这个也是必填的
+	Currency string `json:"currency"` //币种
+	Amount   int    `json:"amount"`   //这个是用 分 为单位的. 有的currency是100分,有的1000分. 具体要看 https://doc.praxiscashier.com/integration_docs/latest/overview/data_formats#currency_fraction
+	Cid      string `json:"cid"`      //Unique customer id in your system. 业务系统里的唯一客户id
+	//NotificationURL string                    `json:"notification_url"` //回调通知接口
+	//ReturnURL       string                    `json:"return_url"`       //前端重定向地址
+	OrderID      string                    `json:"order_id"`      //业务系统内的唯一订单id
+	CustomerData PraxisDepositCustomerData `json:"customer_data"` //这个也是必填的
 	//Timestamp       int64                     `json:"timestamp"` //second
 	Balance       int                    `json:"balance"`
 	CustomerToken string                 `json:"customer_token"`

@@ -55,8 +55,8 @@ func (cli *Client) createDepositRequestParams(req PraxisDepositReq) map[string]i
 	params["payment_method"] = req.PaymentMethod
 	params["gateway"] = req.Gateway
 	params["validation_url"] = req.ValidationURL
-	params["notification_url"] = req.NotificationURL
-	params["return_url"] = req.ReturnURL
+	params["notification_url"] = cli.Params.DepositBackUrl // req.NotificationURL
+	params["return_url"] = cli.Params.DepositFeBackUrl     //req.ReturnURL
 	params["order_id"] = req.OrderID
 	params["version"] = cli.Params.ApiVersion
 	params["timestamp"] = time.Now().Unix() // Unix timestamp in seconds
