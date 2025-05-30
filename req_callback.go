@@ -12,13 +12,13 @@ import (
 // the notification will be resent automatically within approximately 5 minutes
 func (cli *Client) CashierCallback(req PraxisBackReq, sign string, processor func(PraxisBackReq) error) error {
 	//验证回调合法性
-	if req.MerchantID != cli.MerchantID || req.ApplicationKey != cli.ApplicationKey {
+	if req.MerchantID != cli.Params.MerchantId || req.ApplicationKey != cli.Params.ApplicationKey {
 		return errors.New("merchantId or applicationKey is illegal!")
 	}
 	//自己算一下签名
 	requestParams := cli.CreateCashierCallbackRequestParams(req)
 	bsUtil := utils.NewBuildSignatureUtils()
-	signSelf := bsUtil.GetGtAuthentication(requestParams, cli.MerchantSecret, utils.SignTypeCallbackReq)
+	signSelf := bsUtil.GetGtAuthentication(requestParams, cli.Params.MerchantSecret, utils.SignTypeCallbackReq)
 	//对比下签名正确性
 	if signSelf != sign {
 		fmt.Printf("sign is not equal, sign:%s, signSelf:%s\n", sign, signSelf)
@@ -33,8 +33,8 @@ func (cli *Client) CashierCallback(req PraxisBackReq, sign string, processor fun
 func (cli *Client) CreateCashierCallbackRequestParams(req PraxisBackReq) map[string]interface{} {
 	params := make(map[string]interface{})
 
-	params["merchant_id"] = cli.MerchantID // Assuming these are package-level variables
-	params["application_key"] = cli.ApplicationKey
+	params["merchant_id"] = cli.Params.MerchantId // Assuming these are package-level variables
+	params["application_key"] = cli.Params.ApplicationKey
 	params["timestamp"] = req.Timestamp //praxis传过来的.
 	params["customer_token"] = req.Customer.CustomerToken
 	params["order_id"] = req.Session.OrderID
@@ -54,7 +54,7 @@ func (cli *Client) CreateCashierCallbackRequestParams(req PraxisBackReq) map[str
 func (cli *Client) GenerateCallbackRespGtAuthentication(resp PraxisBackResp) string {
 	requestParams := createCashierCallbackResponseParams(resp)
 	bsUtil := utils.NewBuildSignatureUtils()
-	gtAuthentication := bsUtil.GetGtAuthentication(requestParams, cli.MerchantSecret, utils.SignTypeCallbackResp)
+	gtAuthentication := bsUtil.GetGtAuthentication(requestParams, cli.Params.MerchantSecret, utils.SignTypeCallbackResp)
 	return gtAuthentication
 }
 

@@ -6,26 +6,15 @@ import (
 )
 
 type Client struct {
-	MerchantID     string // merchantId
-	MerchantSecret string // accessKey
-	ApplicationKey string // merchantSecret
-	ApiVersion     string
-	ApiLocale      string
-
-	BaseURL string
+	Params PraxisInitParams
 
 	ryClient *resty.Client
 	logger   utils.Logger
 }
 
-func NewClient(logger utils.Logger, merchantID string, merchantSecret, applicationKey, apiVersion, apiLocale string, baseURL string) *Client {
+func NewClient(logger utils.Logger, params PraxisInitParams) *Client {
 	return &Client{
-		MerchantID:     merchantID,
-		MerchantSecret: merchantSecret,
-		ApplicationKey: applicationKey,
-		ApiVersion:     apiVersion,
-		ApiLocale:      apiLocale,
-		BaseURL:        baseURL,
+		Params: params,
 
 		ryClient: resty.New(), //client实例
 		logger:   logger,

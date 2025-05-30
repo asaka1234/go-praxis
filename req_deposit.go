@@ -10,12 +10,12 @@ import (
 // 下单(充值/提现是同一个接口)
 func (cli *Client) Deposit(req PraxisDepositReq) (*PraxisDepositRsp, error) {
 
-	rawURL := cli.BaseURL
+	rawURL := cli.Params.BaseUrl
 
 	//拿到签名的参数
 	requestParams := cli.createDepositRequestParams(req)
 	bsUtil := utils.NewBuildSignatureUtils()
-	gtAuthentication := bsUtil.GetGtAuthentication(requestParams, cli.MerchantSecret, utils.SignTypeSendReq)
+	gtAuthentication := bsUtil.GetGtAuthentication(requestParams, cli.Params.MerchantSecret, utils.SignTypeSendReq)
 
 	//返回值会放到这里
 	var result PraxisDepositRsp
@@ -38,13 +38,13 @@ func (cli *Client) Deposit(req PraxisDepositReq) (*PraxisDepositRsp, error) {
 func (cli *Client) createDepositRequestParams(req PraxisDepositReq) map[string]interface{} {
 	params := make(map[string]interface{})
 
-	params["merchant_id"] = cli.MerchantID // Assuming these are package-level variables
-	params["application_key"] = cli.ApplicationKey
+	params["merchant_id"] = cli.Params.MerchantId // Assuming these are package-level variables
+	params["application_key"] = cli.Params.ApplicationKey
 	params["intent"] = string(IntentTypePayment) //req.Intent //枚举: payment,withdrawal,authorization (这里完全可以直接写死)
 	params["currency"] = req.Currency
 	params["amount"] = req.Amount
 	params["cid"] = req.Cid
-	params["locale"] = cli.ApiLocale
+	params["locale"] = cli.Params.ApiLocale
 	params["customer_token"] = req.CustomerToken
 
 	// struct → map
@@ -58,7 +58,7 @@ func (cli *Client) createDepositRequestParams(req PraxisDepositReq) map[string]i
 	params["notification_url"] = req.NotificationURL
 	params["return_url"] = req.ReturnURL
 	params["order_id"] = req.OrderID
-	params["version"] = cli.ApiVersion
+	params["version"] = cli.Params.ApiVersion
 	params["timestamp"] = time.Now().Unix() // Unix timestamp in seconds
 
 	return params

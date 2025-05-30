@@ -1,5 +1,15 @@
 package go_praxis
 
+type PraxisInitParams struct {
+	MerchantId     string `json:"merchantId" mapstructure:"merchantId" config:"merchantId"`             // merchantId
+	MerchantSecret string `json:"merchantSecret" mapstructure:"merchantSecret" config:"merchantSecret"` // accessKey
+	ApplicationKey string `json:"applicationKey" mapstructure:"applicationKey" config:"applicationKey"` // merchantSecret
+	ApiVersion     string `json:"apiVersion" mapstructure:"apiVersion" config:"apiVersion"`
+	ApiLocale      string `json:"apiLocale" mapstructure:"apiLocale" config:"apiLocale"`
+
+	BaseUrl string `json:"baseUrl" mapstructure:"baseUrl" config:"baseUrl"`
+}
+
 // ----------pre generate-------------------------
 // https://doc.praxiscashier.com/integration_docs/latest/cashier_api/cashier
 

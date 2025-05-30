@@ -5,7 +5,7 @@ https://doc.praxiscashier.com/integration_docs/latest/cashier_api/cashier
 
 Env
 ==============
-sandbox: https://pci-gw-test.praxispay.com/cashier/cashie
+sandbox: https://pci-gw-test.praxispay.com/cashier/cashier
 Live: https://gw.praxisgate.com/cashier/cashier
 
 
