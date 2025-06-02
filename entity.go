@@ -1,18 +1,18 @@
 package go_praxis
 
 type PraxisInitParams struct {
-	MerchantId     string `json:"merchantId" mapstructure:"merchantId" config:"merchantId"`             // merchantId
-	MerchantSecret string `json:"merchantSecret" mapstructure:"merchantSecret" config:"merchantSecret"` // accessKey
-	ApplicationKey string `json:"applicationKey" mapstructure:"applicationKey" config:"applicationKey"` // merchantSecret
-	ApiVersion     string `json:"apiVersion" mapstructure:"apiVersion" config:"apiVersion"`
-	ApiLocale      string `json:"apiLocale" mapstructure:"apiLocale" config:"apiLocale"`
+	MerchantId     string `json:"merchantId" mapstructure:"merchantId" config:"merchantId"  yaml:"merchantId"`                 // merchantId
+	MerchantSecret string `json:"merchantSecret" mapstructure:"merchantSecret" config:"merchantSecret"  yaml:"merchantSecret"` // accessKey
+	ApplicationKey string `json:"applicationKey" mapstructure:"applicationKey" config:"applicationKey"  yaml:"applicationKey"` // merchantSecret
+	ApiVersion     string `json:"apiVersion" mapstructure:"apiVersion" config:"apiVersion"  yaml:"apiVersion"`
+	ApiLocale      string `json:"apiLocale" mapstructure:"apiLocale" config:"apiLocale"  yaml:"apiLocale"`
 
-	BaseUrl string `json:"baseUrl" mapstructure:"baseUrl" config:"baseUrl"`
+	BaseUrl string `json:"baseUrl" mapstructure:"baseUrl" config:"baseUrl"  yaml:"baseUrl"`
 
-	DepositBackUrl    string `json:"depositBackUrl" mapstructure:"depositBackUrl" config:"depositBackUrl"`
-	DepositFeBackUrl  string `json:"depositFeBackUrl" mapstructure:"depositFeBackUrl" config:"depositFeBackUrl"`
-	WithdrawBackUrl   string `json:"withdrawBackUrl" mapstructure:"withdrawBackUrl" config:"withdrawBackUrl"`
-	WithdrawFeBackUrl string `json:"WithdrawFeBackUrl" mapstructure:"WithdrawFeBackUrl" config:"WithdrawFeBackUrl"`
+	DepositBackUrl    string `json:"depositBackUrl" mapstructure:"depositBackUrl" config:"depositBackUrl"  yaml:"depositBackUrl"`
+	DepositFeBackUrl  string `json:"depositFeBackUrl" mapstructure:"depositFeBackUrl" config:"depositFeBackUrl"  yaml:"depositFeBackUrl"`
+	WithdrawBackUrl   string `json:"withdrawBackUrl" mapstructure:"withdrawBackUrl" config:"withdrawBackUrl"  yaml:"withdrawBackUrl"`
+	WithdrawFeBackUrl string `json:"WithdrawFeBackUrl" mapstructure:"WithdrawFeBackUrl" config:"WithdrawFeBackUrl"  yaml:"WithdrawFeBackUrl"`
 }
 
 // ----------pre generate-------------------------
