@@ -153,7 +153,7 @@ type PraxisBackReqSessionData struct {
 	AuthToken         string  `json:"auth_token"`     //must
 	Intent            string  `json:"intent"`         //must 用来区分是充值还是提现. 充值->payment, 提现->withdrawal)
 	SessionStatus     string  `json:"session_status"` //must
-	OrderID           string  `json:"order_id"`       //must
+	OrderID           string  `json:"order_id"`       //must  是商户的订单号 (Transaction identifier in your system)
 	Currency          string  `json:"currency"`       //must
 	Amount            float64 `json:"amount,omitempty"`
 	ConversionRate    float64 `json:"conversion_rate,omitempty"`
@@ -161,7 +161,7 @@ type PraxisBackReqSessionData struct {
 	ProcessedAmount   float64 `json:"processed_amount"`   //must
 	PaymentMethod     string  `json:"payment_method,omitempty"`
 	Gateway           string  `json:"gateway,omitempty"`
-	Cid               string  `json:"cid"`                 //must
+	Cid               string  `json:"cid"`                 //must 商户的user id
 	Variable1         string  `json:"variable1,omitempty"` // omitempty if empty
 	Variable2         string  `json:"variable2,omitempty"` // omitempty if empty
 	Variable3         string  `json:"variable3,omitempty"` // omitempty if empty
