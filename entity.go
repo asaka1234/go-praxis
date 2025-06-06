@@ -78,7 +78,7 @@ type PraxisWithdrawReq struct {
 	//ApplicationKey  string                     `json:"application_key"`
 	//Locale          string                     `json:"locale"`
 	//Version         string                     `json:"version"`
-	//Intent          string                     `json:"intent"` //这里sdk直接写死
+	//Intent          string                     `json:"intent"` //这里sdk直接写死(区分:充值->payment, 提现->withdrawal)
 	Currency string `json:"currency"` //币种
 	Amount   int    `json:"amount"`   //这个是用 分 为单位的. 有的currency是100分,有的1000分. 具体要看 https://doc.praxiscashier.com/integration_docs/latest/overview/data_formats#currency_fraction
 	Cid      string `json:"cid"`      //Unique customer id in your system. 业务系统里的唯一客户id
@@ -151,7 +151,7 @@ type PraxisBackReqCustomerData struct {
 
 type PraxisBackReqSessionData struct {
 	AuthToken         string  `json:"auth_token"`     //must
-	Intent            string  `json:"intent"`         //must
+	Intent            string  `json:"intent"`         //must 用来区分是充值还是提现. 充值->payment, 提现->withdrawal)
 	SessionStatus     string  `json:"session_status"` //must
 	OrderID           string  `json:"order_id"`       //must
 	Currency          string  `json:"currency"`       //must
