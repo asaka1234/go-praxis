@@ -25,7 +25,7 @@ func (l VLog) Errorf(format string, args ...interface{}) {
 func TestCallback(t *testing.T) {
 	vLog := VLog{}
 	//构造client
-	cli := NewClient(vLog, PraxisInitParams{MERCHANT_ID, MERCHANT_SECRET, APPLICATION_KEY, API_VERSION, API_LOCALE, SANDBOX_URL, DepositBackUrl, DepositFeBackUrl, WithdrawBackUrl, WithdrawFeBackUrl})
+	cli := NewClient(vLog, &PraxisInitParams{MERCHANT_ID, MERCHANT_SECRET, APPLICATION_KEY, API_VERSION, API_LOCALE, SANDBOX_URL, DepositBackUrl, DepositFeBackUrl, WithdrawBackUrl, WithdrawFeBackUrl})
 
 	//1. 获取请求
 	req := GenCallbackRequestDemo()
