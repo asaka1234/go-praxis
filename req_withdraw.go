@@ -26,6 +26,7 @@ func (cli *Client) Withdraw(req PraxisWithdrawReq) (*PraxisWithdrawResp, error) 
 		R().
 		SetBody(requestParams).
 		SetHeaders(getAuthHeaders(gtAuthentication)).
+		SetDebug(cli.debugMode).
 		SetResult(&result).
 		Post(rawURL)
 

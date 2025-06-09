@@ -26,6 +26,7 @@ func (cli *Client) Deposit(req PraxisDepositReq) (*PraxisDepositRsp, error) {
 		SetBody(requestParams).
 		SetHeaders(getAuthHeaders(gtAuthentication)).
 		SetResult(&result).
+		SetDebug(cli.debugMode).
 		Post(rawURL)
 
 	if err != nil {
@@ -45,16 +46,16 @@ func (cli *Client) createDepositRequestParams(req PraxisDepositReq) map[string]i
 	params["amount"] = req.Amount
 	params["cid"] = req.Cid
 	params["locale"] = cli.Params.ApiLocale
-	params["customer_token"] = req.CustomerToken
+	params["customer_token"] = nil //req.CustomerToken
 
 	// struct → map
 	var userMap map[string]interface{}
 	mapstructure.Decode(req.CustomerData, &userMap)
 	params["customer_data"] = userMap //req.CustomerData //把这个struct转为map
 
-	params["payment_method"] = req.PaymentMethod
-	params["gateway"] = req.Gateway
-	params["validation_url"] = req.ValidationURL
+	params["payment_method"] = nil                         //req.PaymentMethod
+	params["gateway"] = nil                                //req.Gateway
+	params["validation_url"] = nil                         //req.ValidationURL
 	params["notification_url"] = cli.Params.DepositBackUrl // req.NotificationURL
 	params["return_url"] = cli.Params.DepositFeBackUrl     //req.ReturnURL
 	params["order_id"] = req.OrderID
