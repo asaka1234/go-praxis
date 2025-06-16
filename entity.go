@@ -88,13 +88,13 @@ type PraxisCashierSession struct {
 
 // 回调的入参
 type PraxisCashierBackReq struct {
-	MerchantID     string                              `json:"merchant_id" mapstructure:"merchant_id"`
-	ApplicationKey string                              `json:"application_key" mapstructure:"application_key"`
-	Customer       PraxisCashierBackReqCustomerData    `json:"customer" mapstructure:"customer"`
-	Session        PraxisCashierBackReqSessionData     `json:"session" mapstructure:"session"`
-	Transaction    PraxisCashierBackReqTransactionData `json:"transaction" mapstructure:"transaction"`
-	Version        string                              `json:"version" mapstructure:"version"`
-	Timestamp      int64                               `json:"timestamp" mapstructure:"timestamp"`
+	MerchantID     string                               `json:"merchant_id" mapstructure:"merchant_id"`
+	ApplicationKey string                               `json:"application_key" mapstructure:"application_key"`
+	Customer       *PraxisCashierBackReqCustomerData    `json:"customer" mapstructure:"customer"`
+	Session        *PraxisCashierBackReqSessionData     `json:"session" mapstructure:"session"`
+	Transaction    *PraxisCashierBackReqTransactionData `json:"transaction" mapstructure:"transaction"`
+	Version        string                               `json:"version" mapstructure:"version"`
+	Timestamp      int64                                `json:"timestamp" mapstructure:"timestamp"`
 }
 
 type PraxisCashierBackReqCustomerData struct {
