@@ -52,34 +52,3 @@ func (cli *Client) Withdraw(req PraxisCashierReq) (*PraxisCashierResp, error) {
 
 	return &result, err
 }
-
-/*
-func (cli *Client) CreateWithdrawRequestParams(req PraxisWithdrawReq) map[string]interface{} {
-	params := make(map[string]interface{})
-
-	params["merchant_id"] = cli.Params.MerchantId
-	params["application_key"] = cli.Params.ApplicationKey
-	params["intent"] = string(IntentTypeWithdrawal) //req.Intent
-	params["currency"] = req.Currency
-	params["amount"] = req.Amount
-	params["cid"] = req.Cid
-	params["locale"] = cli.Params.ApiLocale // Assuming Locale is a package constant
-	params["customer_token"] = req.CustomerToken
-
-	// struct → map
-	var userMap map[string]interface{}
-	mapstructure.Decode(req.CustomerData, &userMap)
-	params["customer_data"] = userMap //req.CustomerData //把这个struct转为map
-
-	params["payment_method"] = req.PaymentMethod
-	params["gateway"] = req.Gateway
-	params["validation_url"] = req.ValidationURL
-	params["notification_url"] = cli.Params.WithdrawBackUrl //req.NotificationURL
-	params["return_url"] = cli.Params.WithdrawFeBackUrl     //req.ReturnURL
-	params["order_id"] = req.OrderID
-	params["version"] = cli.Params.ApiVersion // Assuming APIVersion is a package constant
-	params["timestamp"] = time.Now().Unix()   // Unix timestamp in seconds
-
-	return params
-}
-*/

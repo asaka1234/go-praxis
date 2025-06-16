@@ -88,68 +88,67 @@ type PraxisCashierSession struct {
 
 // 回调的入参
 type PraxisCashierBackReq struct {
-	//must
-	MerchantID     string                               `json:"merchant_id"`
-	ApplicationKey string                               `json:"application_key"`
-	Customer       *PraxisCashierBackReqCustomerData    `json:"customer"`
-	Session        *PraxisCashierBackReqSessionData     `json:"session"`
-	Transaction    *PraxisCashierBackReqTransactionData `json:"transaction"`
-	Version        string                               `json:"version"`
-	Timestamp      int64                                `json:"timestamp"`
+	MerchantID     string                              `json:"merchant_id" mapstructure:"merchant_id"`
+	ApplicationKey string                              `json:"application_key" mapstructure:"application_key"`
+	Customer       PraxisCashierBackReqCustomerData    `json:"customer" mapstructure:"customer"`
+	Session        PraxisCashierBackReqSessionData     `json:"session" mapstructure:"session"`
+	Transaction    PraxisCashierBackReqTransactionData `json:"transaction" mapstructure:"transaction"`
+	Version        string                              `json:"version" mapstructure:"version"`
+	Timestamp      int64                               `json:"timestamp" mapstructure:"timestamp"`
 }
 
 type PraxisCashierBackReqCustomerData struct {
-	CustomerToken     string `json:"customer_token"` //must
-	FirstName         string `json:"first_name"`
-	LastName          string `json:"last_name"`
-	AVSAlert          *int   `json:"avs_alert,omitempty"`          // 地址校验收通过 0成功 1失败
-	VerificationAlert *int   `json:"verification_alert,omitempty"` // 客户验证是否通过  0通过
+	CustomerToken     string `json:"customer_token" mapstructure:"customer_token"` //must
+	FirstName         string `json:"first_name" mapstructure:"first_name"`
+	LastName          string `json:"last_name" mapstructure:"last_name"`
+	AVSAlert          *int   `json:"avs_alert,omitempty" mapstructure:"avs_alert"`                   // 地址校验收通过 0成功 1失败
+	VerificationAlert *int   `json:"verification_alert,omitempty" mapstructure:"verification_alert"` // 客户验证是否通过  0通过
 }
 
 type PraxisCashierBackReqSessionData struct {
-	AuthToken         string  `json:"auth_token"`     //must
-	Intent            string  `json:"intent"`         //must 用来区分是充值还是提现. 充值->payment, 提现->withdrawal)
-	SessionStatus     string  `json:"session_status"` //must
-	OrderID           string  `json:"order_id"`       //must  是商户的订单号 (Transaction identifier in your system)
-	Currency          string  `json:"currency"`       //must
-	Amount            float64 `json:"amount,omitempty"`
-	ConversionRate    float64 `json:"conversion_rate,omitempty"`
-	ProcessedCurrency string  `json:"processed_currency"` //must
-	ProcessedAmount   float64 `json:"processed_amount"`   //must
-	PaymentMethod     string  `json:"payment_method,omitempty"`
-	Gateway           string  `json:"gateway,omitempty"`
-	Cid               string  `json:"cid"`                 //must 商户的user id
-	Variable1         string  `json:"variable1,omitempty"` // omitempty if empty
-	Variable2         string  `json:"variable2,omitempty"` // omitempty if empty
-	Variable3         string  `json:"variable3,omitempty"` // omitempty if empty
+	AuthToken         string  `json:"auth_token" mapstructure:"auth_token"`         //must
+	Intent            string  `json:"intent" mapstructure:"intent"`                 //must 用来区分是充值还是提现. 充值->payment, 提现->withdrawal)
+	SessionStatus     string  `json:"session_status" mapstructure:"session_status"` //must
+	OrderID           string  `json:"order_id" mapstructure:"order_id"`             //must  是商户的订单号 (Transaction identifier in your system)
+	Currency          string  `json:"currency" mapstructure:"currency"`             //must
+	Amount            float64 `json:"amount,omitempty" mapstructure:"amount"`
+	ConversionRate    float64 `json:"conversion_rate,omitempty" mapstructure:"conversion_rate"`
+	ProcessedCurrency string  `json:"processed_currency" mapstructure:"processed_currency"` //must
+	ProcessedAmount   float64 `json:"processed_amount" mapstructure:"processed_amount"`     //must
+	PaymentMethod     string  `json:"payment_method,omitempty" mapstructure:"payment_method"`
+	Gateway           string  `json:"gateway,omitempty" mapstructure:"gateway"`
+	Cid               string  `json:"cid" mapstructure:"cid"`                       //must 商户的user id
+	Variable1         string  `json:"variable1,omitempty" mapstructure:"variable1"` // omitempty if empty
+	Variable2         string  `json:"variable2,omitempty" mapstructure:"variable2"` // omitempty if empty
+	Variable3         string  `json:"variable3,omitempty" mapstructure:"variable3"` // omitempty if empty
 }
 
 type PraxisCashierBackReqTransactionData struct {
-	TransactionType   string                 `json:"transaction_type"`
-	TransactionStatus string                 `json:"transaction_status"`
-	Tid               int                    `json:"tid"`
-	TransactionID     string                 `json:"transaction_id"`
-	Currency          string                 `json:"currency"`
-	Amount            int                    `json:"amount"`
-	ConversionRate    float64                `json:"conversion_rate"` //TODO 文档中有冲突,说明是string,例子是float
-	ProcessedCurrency string                 `json:"processed_currency"`
-	ProcessedAmount   int                    `json:"processed_amount"`
-	Fee               int                    `json:"fee"`
-	FeeIncluded       int                    `json:"fee_included"`
-	FeeType           string                 `json:"fee_type"`
-	PaymentMethod     string                 `json:"payment_method"`
-	PaymentProcessor  string                 `json:"payment_processor"`
-	Gateway           string                 `json:"gateway"`
-	Card              *PraxisBackReqCardData `json:"card,omitempty"`
+	TransactionType   string                 `json:"transaction_type" mapstructure:"transaction_type"`
+	TransactionStatus string                 `json:"transaction_status" mapstructure:"transaction_status"`
+	Tid               int                    `json:"tid" mapstructure:"tid"`
+	TransactionID     string                 `json:"transaction_id" mapstructure:"transaction_id"`
+	Currency          string                 `json:"currency" mapstructure:"currency"`
+	Amount            int                    `json:"amount" mapstructure:"amount"`
+	ConversionRate    interface{}            `json:"conversion_rate" mapstructure:"conversion_rate"` //TODO 文档中有冲突,说明是string,例子是float
+	ProcessedCurrency string                 `json:"processed_currency" mapstructure:"processed_currency"`
+	ProcessedAmount   int                    `json:"processed_amount" mapstructure:"processed_amount"`
+	Fee               int                    `json:"fee" mapstructure:"fee"`
+	FeeIncluded       int                    `json:"fee_included" mapstructure:"fee_included"`
+	FeeType           string                 `json:"fee_type" mapstructure:"fee_type"`
+	PaymentMethod     string                 `json:"payment_method" mapstructure:"payment_method"`
+	PaymentProcessor  string                 `json:"payment_processor" mapstructure:"payment_processor"`
+	Gateway           string                 `json:"gateway" mapstructure:"gateway"`
+	Card              *PraxisBackReqCardData `json:"card,omitempty" mapstructure:"card"`
 }
 
 type PraxisBackReqCardData struct {
-	CardToken      string `json:"card_token"`
-	CardType       string `json:"card_type"`
-	CardNumber     string `json:"card_number"`
-	CardExp        string `json:"card_exp"`
-	CardIssuerName string `json:"card_issuer_name"`
-	CardHolder     string `json:"card_holder"`
+	CardToken      string `json:"card_token" mapstructure:"card_token"`
+	CardType       string `json:"card_type" mapstructure:"card_type"`
+	CardNumber     string `json:"card_number" mapstructure:"card_number"`
+	CardExp        string `json:"card_exp" mapstructure:"card_exp"`
+	CardIssuerName string `json:"card_issuer_name" mapstructure:"card_issuer_name"`
+	CardHolder     string `json:"card_holder" mapstructure:"card_holder"`
 }
 
 //-------------------------------------------------------------------

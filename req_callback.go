@@ -15,6 +15,7 @@ func (cli *Client) CashierCallback(req PraxisCashierBackReq, sign string, proces
 	if req.MerchantID != cli.Params.MerchantId || req.ApplicationKey != cli.Params.ApplicationKey {
 		return errors.New("merchantId or applicationKey is illegal!")
 	}
+
 	//自己算一下签名
 	requestParams := cli.CreateCashierCallbackRequestParams(req)
 	bsUtil := utils.NewBuildSignatureUtils()
