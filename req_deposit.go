@@ -39,7 +39,6 @@ func (cli *Client) Deposit(req PraxisCashierReq) (*PraxisCashierResp, error) {
 		SetHeaders(getAuthHeaders(gtAuthentication)).
 		SetDebug(cli.debugMode).
 		SetResult(&result).
-		SetDebug(cli.debugMode).
 		Post(rawURL)
 
 	if err != nil {
