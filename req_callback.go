@@ -10,7 +10,7 @@ import (
 
 // if your API response contains "status":-1 or responds in unrecognized format,
 // the notification will be resent automatically within approximately 5 minutes
-func (cli *Client) CashierCallback(req PraxisBackReq, sign string, processor func(PraxisBackReq) error) error {
+func (cli *Client) CashierCallback(req PraxisCashierBackReq, sign string, processor func(PraxisCashierBackReq) error) error {
 	//验证回调合法性
 	if req.MerchantID != cli.Params.MerchantId || req.ApplicationKey != cli.Params.ApplicationKey {
 		return errors.New("merchantId or applicationKey is illegal!")
@@ -30,7 +30,7 @@ func (cli *Client) CashierCallback(req PraxisBackReq, sign string, processor fun
 }
 
 // 获取签名的字段
-func (cli *Client) CreateCashierCallbackRequestParams(req PraxisBackReq) map[string]interface{} {
+func (cli *Client) CreateCashierCallbackRequestParams(req PraxisCashierBackReq) map[string]interface{} {
 	params := make(map[string]interface{})
 
 	params["merchant_id"] = cli.Params.MerchantId // Assuming these are package-level variables

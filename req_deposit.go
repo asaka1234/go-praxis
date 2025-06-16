@@ -8,22 +8,34 @@ import (
 )
 
 // 下单(充值/提现是同一个接口)
-func (cli *Client) Deposit(req PraxisDepositReq) (*PraxisDepositRsp, error) {
+func (cli *Client) Deposit(req PraxisCashierReq) (*PraxisCashierResp, error) {
 
 	rawURL := cli.Params.BaseUrl
 
-	//拿到签名的参数
-	requestParams := cli.createDepositRequestParams(req)
+	var params map[string]interface{}
+	mapstructure.Decode(req, &params)
+
+	//补充字段
+	params["merchant_id"] = cli.Params.MerchantId
+	params["application_key"] = cli.Params.ApplicationKey
+	params["version"] = cli.Params.ApiVersion
+	params["locale"] = cli.Params.ApiLocale
+	params["notification_url"] = cli.Params.DepositBackUrl
+	params["return_url"] = cli.Params.DepositFeBackUrl
+	params["intent"] = string(IntentTypePayment) //决策了是 deposit
+	params["timestamp"] = time.Now().Unix()
+
+	//计算签名
 	bsUtil := utils.NewBuildSignatureUtils()
-	gtAuthentication := bsUtil.GetGtAuthentication(requestParams, cli.Params.MerchantSecret, utils.SignTypeSendReq)
+	gtAuthentication := bsUtil.GetGtAuthentication(params, cli.Params.MerchantSecret, utils.SignTypeSendReq)
 
 	//返回值会放到这里
-	var result PraxisDepositRsp
+	var result PraxisCashierResp
 
 	_, err := cli.ryClient.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true}).
 		SetCloseConnection(true).
 		R().
-		SetBody(requestParams).
+		SetBody(params).
 		SetHeaders(getAuthHeaders(gtAuthentication)).
 		SetResult(&result).
 		SetDebug(cli.debugMode).
@@ -36,6 +48,7 @@ func (cli *Client) Deposit(req PraxisDepositReq) (*PraxisDepositRsp, error) {
 	return &result, err
 }
 
+/*
 func (cli *Client) createDepositRequestParams(req PraxisDepositReq) map[string]interface{} {
 	params := make(map[string]interface{})
 
@@ -64,3 +77,5 @@ func (cli *Client) createDepositRequestParams(req PraxisDepositReq) map[string]i
 
 	return params
 }
+
+*/

@@ -2,29 +2,43 @@ package go_praxis
 
 import (
 	"crypto/tls"
+	"fmt"
 	"github.com/asaka1234/go-praxis/utils"
 	"github.com/mitchellh/mapstructure"
 	"time"
 )
 
 // 下单(充值/提现是同一个接口)
-func (cli *Client) Withdraw(req PraxisWithdrawReq) (*PraxisWithdrawResp, error) {
+func (cli *Client) Withdraw(req PraxisCashierReq) (*PraxisCashierResp, error) {
 
 	rawURL := cli.Params.BaseUrl
 
-	//拿到签名的参数
-	requestParams := cli.CreateWithdrawRequestParams(req)
+	var params map[string]interface{}
+	mapstructure.Decode(req, &params)
 
+	//补充字段
+	params["merchant_id"] = cli.Params.MerchantId
+	params["application_key"] = cli.Params.ApplicationKey
+	params["version"] = cli.Params.ApiVersion
+	params["locale"] = cli.Params.ApiLocale
+	params["notification_url"] = cli.Params.WithdrawBackUrl
+	params["return_url"] = cli.Params.WithdrawFeBackUrl
+	params["intent"] = string(IntentTypeWithdrawal) //决策了是 withdraw
+	params["timestamp"] = time.Now().Unix()
+
+	fmt.Printf("=====>%+v\n", params)
+
+	//计算签名
 	bsUtil := utils.NewBuildSignatureUtils()
-	gtAuthentication := bsUtil.GetGtAuthentication(requestParams, cli.Params.MerchantSecret, utils.SignTypeSendReq)
+	gtAuthentication := bsUtil.GetGtAuthentication(params, cli.Params.MerchantSecret, utils.SignTypeSendReq)
 
 	//返回值会放到这里
-	var result PraxisWithdrawResp
+	var result PraxisCashierResp
 
 	_, err := cli.ryClient.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true}).
 		SetCloseConnection(true).
 		R().
-		SetBody(requestParams).
+		SetBody(params).
 		SetHeaders(getAuthHeaders(gtAuthentication)).
 		SetDebug(cli.debugMode).
 		SetResult(&result).
@@ -39,6 +53,7 @@ func (cli *Client) Withdraw(req PraxisWithdrawReq) (*PraxisWithdrawResp, error) 
 	return &result, err
 }
 
+/*
 func (cli *Client) CreateWithdrawRequestParams(req PraxisWithdrawReq) map[string]interface{} {
 	params := make(map[string]interface{})
 
@@ -67,3 +82,4 @@ func (cli *Client) CreateWithdrawRequestParams(req PraxisWithdrawReq) map[string
 
 	return params
 }
+*/

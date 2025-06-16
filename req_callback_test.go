@@ -29,7 +29,7 @@ func TestCallback(t *testing.T) {
 
 	//1. 获取请求
 	req := GenCallbackRequestDemo()
-	var backReq PraxisBackReq
+	var backReq PraxisCashierBackReq
 	err := json.Unmarshal([]byte(req), &backReq)
 	if err != nil {
 		fmt.Println("Error:", err)
@@ -39,7 +39,7 @@ func TestCallback(t *testing.T) {
 	//2. 处理请求
 
 	//发请求
-	err = cli.CashierCallback(backReq, "sign", func(PraxisBackReq) error { return nil })
+	err = cli.CashierCallback(backReq, "sign", func(PraxisCashierBackReq) error { return nil })
 	if err != nil {
 		fmt.Printf("err:%s\n", err.Error())
 		return

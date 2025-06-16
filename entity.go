@@ -18,103 +18,59 @@ type PraxisInitParams struct {
 // ----------pre generate-------------------------
 // https://doc.praxiscashier.com/integration_docs/latest/cashier_api/cashier
 
-type PraxisDepositReq struct {
-	//must
-	//MerchantID      string                     `json:"merchant_id"`
-	//ApplicationKey  string                     `json:"application_key"`
-	//Locale          string                     `json:"locale"`
-	//Version         string                     `json:"version"`
-	//Intent          string `json:"intent"`           //枚举: payment,withdrawal,authorization //这里sdk直接写死
-	Currency string `json:"currency"` //币种
-	Amount   int    `json:"amount"`   //这个是用 分 为单位的. 有的currency是100分,有的1000分. 具体要看 https://doc.praxiscashier.com/integration_docs/latest/overview/data_formats#currency_fraction
-	Cid      string `json:"cid"`      //Unique customer id in your system. 业务系统里的唯一客户id
-	//NotificationURL string                    `json:"notification_url"` //回调通知接口
-	//ReturnURL       string                    `json:"return_url"`       //前端重定向地址
-	OrderID      string                    `json:"order_id"`      //业务系统内的唯一订单id
-	CustomerData PraxisDepositCustomerData `json:"customer_data"` //这个也是必填的
-	//Timestamp       int64                     `json:"timestamp"`        //seconds
-	//option
-	CustomerToken string `json:"customer_token"` //客户身份id的HASH
-	PaymentMethod string `json:"payment_method"`
-	Gateway       string `json:"gateway"`
-	ValidationURL string `json:"validation_url"`
+type PraxisCashierReq struct {
+	Currency     string                    `json:"currency" mapstructure:"currency"`
+	Amount       int                       `json:"amount" mapstructure:"amount"`
+	OrderID      string                    `json:"order_id" mapstructure:"order_id"` //商户订单号
+	Cid          string                    `json:"cid" mapstructure:"cid"`           //商户uid
+	CustomerData PraxisCashierCustomerData `json:"customer_data" mapstructure:"customer_data"`
+	//如下由sdk来设置
+	//MerchantId      string `json:"merchant_id"`
+	//ApplicationKey  string `json:"application_key"`
+	//Intent          string `json:"intent"` //枚举: payment,withdrawal,authorization //这里sdk直接写死
+	//Timestamp       int    `json:"timestamp"`
+	//Version         string `json:"version"`
+	//Locale          string `json:"locale"`
+	//NotificationUrl string `json:"notification_url"`
+	//ReturnUrl       string `json:"return_url"`
 }
 
-type PraxisDepositCustomerData struct {
+type PraxisCashierCustomerData struct {
 	Country   string `json:"country" mapstructure:"country"`
 	FirstName string `json:"first_name" mapstructure:"first_name"`
 	LastName  string `json:"last_name" mapstructure:"last_name"`
-	DOB       string `json:"dob" mapstructure:"dob"` // Date of birth (format: YYYY-MM-DD)
 	Email     string `json:"email" mapstructure:"email"`
-	Phone     string `json:"phone" mapstructure:"phone"`     // Should include country code
-	Zip       string `json:"zip" mapstructure:"zip"`         // Postal/ZIP code
-	State     string `json:"state" mapstructure:"state"`     // State/Province
-	City      string `json:"city" mapstructure:"city"`       // City
-	Address   string `json:"address" mapstructure:"address"` // Street address
-	Profile   int    `json:"profile" mapstructure:"profile"` // Street address
+	//option
+	//DOB     string `json:"dob" mapstructure:"dob"`         // Date of birth (format: YYYY-MM-DD)
+	//Phone   string `json:"phone" mapstructure:"phone"`     // Should include country code
+	//Zip     string `json:"zip" mapstructure:"zip"`         // Postal/ZIP code
+	//State   string `json:"state" mapstructure:"state"`     // State/Province
+	//City    string `json:"city" mapstructure:"city"`       // City
+	//Address string `json:"address" mapstructure:"address"` // Street address
+	//Profile int    `json:"profile" mapstructure:"profile"` // Street address
 }
 
-type PraxisDepositCardData struct {
-	CardNumber string `json:"card_number"` // Encrypted card number (e.g., "ZMq4wDaiaQ/xOwMEcQ7R3ASjTnoOMu+avLuJYgAnz1Q=")
-	CardExp    string `json:"card_exp"`    // Encrypted expiration date (e.g., "WI8V4bE5/l8fIhUv6aMO8w==")
-	CVV        string `json:"cvv"`         // Encrypted CVV code
-}
+//--------------------------------------------------------------------
 
-type PraxisDepositRsp struct {
-	Status      int                        `json:"status"` //0是正确， 逻辑错误>0,系统错误<0
-	Description string                     `json:"description"`
-	Customer    *PraxisDevicePsRspCustomer `json:"customer"`
-	Session     *PraxisDevicePsRspSession  `json:"session"`
-	Version     string                     `json:"version"`
-	Timestamp   int64                      `json:"timestamp"` //seconds
+type PraxisCashierResp struct {
+	Status      int                    `json:"status"` //0是正确， 逻辑错误>0,系统错误<0
+	Description string                 `json:"description"`
+	Customer    *PraxisCashierCustomer `json:"customer"`
+	Session     *PraxisCashierSession  `json:"session"`
+	Version     string                 `json:"version"`
+	Timestamp   int64                  `json:"timestamp"` //seconds
 	//option
 	RedirectURL string `json:"redirect_url"` //是用户要付款的psp页面的url
 }
 
-//---------------------------------------------
-
-type PraxisWithdrawReq struct {
-	//MerchantID      string                     `json:"merchant_id"`
-	//ApplicationKey  string                     `json:"application_key"`
-	//Locale          string                     `json:"locale"`
-	//Version         string                     `json:"version"`
-	//Intent          string                     `json:"intent"` //这里sdk直接写死(区分:充值->payment, 提现->withdrawal)
-	Currency string `json:"currency"` //币种
-	Amount   int    `json:"amount"`   //这个是用 分 为单位的. 有的currency是100分,有的1000分. 具体要看 https://doc.praxiscashier.com/integration_docs/latest/overview/data_formats#currency_fraction
-	Cid      string `json:"cid"`      //Unique customer id in your system. 业务系统里的唯一客户id
-	//NotificationURL string                    `json:"notification_url"` //回调通知接口
-	//ReturnURL       string                    `json:"return_url"`       //前端重定向地址
-	OrderID      string                    `json:"order_id"`      //业务系统内的唯一订单id
-	CustomerData PraxisDepositCustomerData `json:"customer_data"` //这个也是必填的
-	//Timestamp       int64                     `json:"timestamp"` //second
-	Balance       int                    `json:"balance"`
-	CustomerToken string                 `json:"customer_token"`
-	CardData      *PraxisDepositCardData `json:"card_data"`
-	PaymentMethod string                 `json:"payment_method"`
-	Gateway       string                 `json:"gateway"`
-	ValidationURL string                 `json:"validation_url"`
-}
-
-type PraxisWithdrawResp struct {
-	Status      int                        `json:"status"`
-	Description string                     `json:"description"`
-	RedirectURL string                     `json:"redirect_url"`
-	Customer    *PraxisDevicePsRspCustomer `json:"customer"`
-	Session     *PraxisDevicePsRspSession  `json:"session"`
-	Version     string                     `json:"version"`
-	Timestamp   int64                      `json:"timestamp"`
-}
-
-// PraxisDevicePsRspCustomer represents customer data in response
-type PraxisDevicePsRspCustomer struct {
+type PraxisCashierCustomer struct {
 	CustomerToken string `json:"customer_token"` //HASH value of customer's identity
 	//option
 	AVSAlert          int `json:"avs_alert"`
 	VerificationAlert int `json:"verification_alert"`
 }
 
-// PraxisDevicePsRspSession represents session data in response
-type PraxisDevicePsRspSession struct {
+type PraxisCashierSession struct {
 	Amount            float64 `json:"amount"`
 	AuthToken         string  `json:"auth_token"`
 	Cid               string  `json:"cid"`
@@ -126,22 +82,23 @@ type PraxisDevicePsRspSession struct {
 	SessionStatus     string  `json:"session_status"`
 }
 
-// ----------deposit callback-------------------------
+// ---------- callback---------------------------------------------------------
+
 // https://doc.praxiscashier.com/integration_docs/latest/webhooks/notification
 
 // 回调的入参
-type PraxisBackReq struct {
+type PraxisCashierBackReq struct {
 	//must
-	MerchantID     string                        `json:"merchant_id"`
-	ApplicationKey string                        `json:"application_key"`
-	Customer       *PraxisBackReqCustomerData    `json:"customer"`
-	Session        *PraxisBackReqSessionData     `json:"session"`
-	Transaction    *PraxisBackReqTransactionData `json:"transaction"`
-	Version        string                        `json:"version"`
-	Timestamp      int64                         `json:"timestamp"`
+	MerchantID     string                               `json:"merchant_id"`
+	ApplicationKey string                               `json:"application_key"`
+	Customer       *PraxisCashierBackReqCustomerData    `json:"customer"`
+	Session        *PraxisCashierBackReqSessionData     `json:"session"`
+	Transaction    *PraxisCashierBackReqTransactionData `json:"transaction"`
+	Version        string                               `json:"version"`
+	Timestamp      int64                                `json:"timestamp"`
 }
 
-type PraxisBackReqCustomerData struct {
+type PraxisCashierBackReqCustomerData struct {
 	CustomerToken     string `json:"customer_token"` //must
 	FirstName         string `json:"first_name"`
 	LastName          string `json:"last_name"`
@@ -149,7 +106,7 @@ type PraxisBackReqCustomerData struct {
 	VerificationAlert *int   `json:"verification_alert,omitempty"` // 客户验证是否通过  0通过
 }
 
-type PraxisBackReqSessionData struct {
+type PraxisCashierBackReqSessionData struct {
 	AuthToken         string  `json:"auth_token"`     //must
 	Intent            string  `json:"intent"`         //must 用来区分是充值还是提现. 充值->payment, 提现->withdrawal)
 	SessionStatus     string  `json:"session_status"` //must
@@ -167,7 +124,7 @@ type PraxisBackReqSessionData struct {
 	Variable3         string  `json:"variable3,omitempty"` // omitempty if empty
 }
 
-type PraxisBackReqTransactionData struct {
+type PraxisCashierBackReqTransactionData struct {
 	TransactionType   string                 `json:"transaction_type"`
 	TransactionStatus string                 `json:"transaction_status"`
 	Tid               int                    `json:"tid"`
@@ -186,7 +143,6 @@ type PraxisBackReqTransactionData struct {
 	Card              *PraxisBackReqCardData `json:"card,omitempty"`
 }
 
-// PraxisDepositBackReqCardData represents card data in transaction
 type PraxisBackReqCardData struct {
 	CardToken      string `json:"card_token"`
 	CardType       string `json:"card_type"`
@@ -195,6 +151,8 @@ type PraxisBackReqCardData struct {
 	CardIssuerName string `json:"card_issuer_name"`
 	CardHolder     string `json:"card_holder"`
 }
+
+//-------------------------------------------------------------------
 
 /*
 {
