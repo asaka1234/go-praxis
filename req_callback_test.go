@@ -28,7 +28,8 @@ func TestCallback(t *testing.T) {
 	cli := NewClient(vLog, &PraxisInitParams{MERCHANT_ID, MERCHANT_SECRET, APPLICATION_KEY, API_VERSION, API_LOCALE, SANDBOX_URL, DepositBackUrl, DepositFeBackUrl, WithdrawBackUrl, WithdrawFeBackUrl})
 
 	//1. 获取请求
-	req := GenCallbackRequestDemo()
+	req := GenCallbackRequestWithdrawDemo() //提现的返回
+	sign := "162f8355fdcd454891c34d1414b76eb4a220c250f4e5706ff1184d50dbbed42a4d1e50c584e7e2305c03bbc2b69486ab"
 	var backReq PraxisCashierBackReq
 	err := json.Unmarshal([]byte(req), &backReq)
 	if err != nil {
@@ -39,12 +40,12 @@ func TestCallback(t *testing.T) {
 	//2. 处理请求
 
 	//发请求
-	err = cli.CashierCallback(backReq, "sign", func(PraxisCashierBackReq) error { return nil })
+	err = cli.CashierCallback(backReq, sign, func(PraxisCashierBackReq) error { return nil })
 	if err != nil {
 		fmt.Printf("err:%s\n", err.Error())
 		return
 	}
-	//fmt.Printf("resp:%+v\n", resp.Session)
+	fmt.Printf("resp:%+v\n", backReq.Session)
 
 }
 
@@ -116,5 +117,80 @@ func GenCallbackRequestDemo() string {
     },
     "version": "1.3",
     "timestamp": 1590611635
+}`
+}
+
+func GenCallbackRequestWithdrawDemo() string {
+	return `{
+  "merchant_id": "API-cptinternational2",
+  "application_key": "cptinternational",
+  "customer": {
+    "customer_token": "7619fe441147e692bd88d2ff6ec0bce2",
+    "country": "GB",
+    "first_name": "",
+    "last_name": "",
+    "avs_alert": 0,
+    "verification_alert": 0
+  },
+  "session": {
+    "auth_token": "19809254f2ab8d7e7c95b1b039bf521b",
+    "intent": "withdrawal",
+    "session_status": "successful",
+    "order_id": "202506180938120775",
+    "currency": "INR",
+    "amount": 319200,
+    "conversion_rate": null,
+    "processed_currency": "INR",
+    "processed_amount": 0,
+    "payment_method": null,
+    "gateway": "ff3bbe8bf67dd86e8319d84444bda590",
+    "cid": "820002060",
+    "variable1": null,
+    "variable2": null,
+    "variable3": null
+  },
+  "transaction": {
+    "transaction_type": "payout",
+    "transaction_status": "requested",
+    "tid": 2564526,
+    "transaction_id": "pp1750228802",
+    "currency": "INR",
+    "amount": 319200,
+    "conversion_rate": "1.000000",
+    "processed_currency": null,
+    "processed_amount": null,
+    "fee": 0,
+    "fee_included": 0,
+    "fee_type": "flat",
+    "payment_method": "altbankwire",
+    "payment_processor": "Test E-Wallet",
+    "gateway": "ff3bbe8bf67dd86e8319d84444bda590",
+    "card": null,
+    "wallet": {
+      "wallet_token": "1uXp_lDbGEOANFeJ",
+      "account_identifier": "836762864@qq.com",
+      "data": {
+        "customer_country": "country_ukraine",
+        "name": "836762864@qq.com",
+        "email": "836762864@qq.com",
+        "phone": "15811000682",
+        "zip": "A",
+        "dqa_t": "45",
+        "test": "4646",
+        "ip_address": "18.162.184.178"
+      }
+    },
+    "is_async": 0,
+    "is_cascade": 0,
+    "cascade_level": 0,
+    "reference_id": null,
+    "withdrawal_request_id": null,
+    "created_by": "INTERNET",
+    "edited_by": null,
+    "status_code": "0",
+    "status_details": "[TEST] Payout initiated"
+  },
+  "version": "1.3",
+  "timestamp": 1750228804
 }`
 }
