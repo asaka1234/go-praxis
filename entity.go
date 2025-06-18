@@ -112,7 +112,7 @@ type PraxisCashierBackReqSessionData struct {
 	OrderID           string  `json:"order_id" mapstructure:"order_id"`             //must  是商户的订单号 (Transaction identifier in your system)
 	Currency          string  `json:"currency" mapstructure:"currency"`             //must
 	Amount            float64 `json:"amount,omitempty" mapstructure:"amount"`
-	ConversionRate    float64 `json:"conversion_rate,omitempty" mapstructure:"conversion_rate"`
+	ConversionRate    string  `json:"conversion_rate,omitempty" mapstructure:"conversion_rate"`
 	ProcessedCurrency string  `json:"processed_currency" mapstructure:"processed_currency"` //must
 	ProcessedAmount   float64 `json:"processed_amount" mapstructure:"processed_amount"`     //must
 	PaymentMethod     string  `json:"payment_method,omitempty" mapstructure:"payment_method"`
@@ -130,7 +130,7 @@ type PraxisCashierBackReqTransactionData struct {
 	TransactionID     string                 `json:"transaction_id" mapstructure:"transaction_id"`
 	Currency          string                 `json:"currency" mapstructure:"currency"`
 	Amount            int                    `json:"amount" mapstructure:"amount"`
-	ConversionRate    interface{}            `json:"conversion_rate" mapstructure:"conversion_rate"` //TODO 文档中有冲突,说明是string,例子是float
+	ConversionRate    string                 `json:"conversion_rate" mapstructure:"conversion_rate"` //TODO 文档中有冲突,说明是string,例子是float
 	ProcessedCurrency string                 `json:"processed_currency" mapstructure:"processed_currency"`
 	ProcessedAmount   int                    `json:"processed_amount" mapstructure:"processed_amount"`
 	Fee               int                    `json:"fee" mapstructure:"fee"`
