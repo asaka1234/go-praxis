@@ -3,7 +3,6 @@ package utils
 import (
 	"crypto/sha512"
 	"encoding/hex"
-	"fmt"
 	"github.com/spf13/cast"
 )
 
@@ -93,7 +92,7 @@ func (h *BuildSignatureUtils) GetGtAuthentication(request map[string]interface{}
 
 	// Concatenate Merchant Secret Key with response params
 	concatenatedString += merchantSecret
-	fmt.Printf("concatenatedString======>%s\n", concatenatedString)
+	//fmt.Printf("concatenatedString======>%s\n", concatenatedString)
 
 	// Generate HASH of concatenated string
 	signature := h.GenerateSignature(concatenatedString)
