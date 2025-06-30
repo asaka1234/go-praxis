@@ -26,8 +26,6 @@ func (cli *Client) Withdraw(req PraxisCashierReq) (*PraxisCashierResp, error) {
 	params["intent"] = string(IntentTypeWithdrawal) //决策了是 withdraw
 	params["timestamp"] = time.Now().Unix()
 
-	fmt.Printf("=====>%+v\n", params)
-
 	//计算签名
 	bsUtil := utils.NewBuildSignatureUtils()
 	gtAuthentication := bsUtil.GetGtAuthentication(params, cli.Params.MerchantSecret, utils.SignTypeSendReq)
@@ -35,7 +33,7 @@ func (cli *Client) Withdraw(req PraxisCashierReq) (*PraxisCashierResp, error) {
 	//返回值会放到这里
 	var result PraxisCashierResp
 
-	_, err := cli.ryClient.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true}).
+	resp, err := cli.ryClient.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true}).
 		SetCloseConnection(true).
 		R().
 		SetBody(params).
@@ -48,6 +46,11 @@ func (cli *Client) Withdraw(req PraxisCashierReq) (*PraxisCashierResp, error) {
 
 	if err != nil {
 		return nil, err
+	}
+
+	if resp.Error() != nil {
+		//反序列化错误会在此捕捉
+		return nil, fmt.Errorf("%v, body:%s", resp.Error(), resp.Body())
 	}
 
 	return &result, err
