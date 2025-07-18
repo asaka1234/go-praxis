@@ -45,7 +45,7 @@ func (cli *Client) Withdraw(req PraxisCashierReq) (*PraxisCashierResp, error) {
 
 	//print log
 	restLog, _ := jsoniter.ConfigCompatibleWithStandardLibrary.Marshal(utils.GetRestyLog(resp))
-	cli.logger.Infof("PSPResty->%+v", string(restLog))
+	cli.logger.Infof("PSPResty#praxis#withdraw->%+v", string(restLog))
 
 	if err != nil {
 		return nil, err

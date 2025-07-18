@@ -45,7 +45,7 @@ func (cli *Client) Deposit(req PraxisCashierReq) (*PraxisCashierResp, error) {
 
 	//print log
 	restLog, _ := jsoniter.ConfigCompatibleWithStandardLibrary.Marshal(utils.GetRestyLog(resp))
-	cli.logger.Infof("PSPResty->%+v", string(restLog))
+	cli.logger.Infof("PSPResty#praxis#deposit->%+v", string(restLog))
 
 	if err != nil {
 		return nil, err
