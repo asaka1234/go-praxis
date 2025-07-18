@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"fmt"
 	"github.com/asaka1234/go-praxis/utils"
+	jsoniter "github.com/json-iterator/go"
 	"github.com/mitchellh/mapstructure"
 	"time"
 )
@@ -42,10 +43,17 @@ func (cli *Client) Withdraw(req PraxisCashierReq) (*PraxisCashierResp, error) {
 		SetResult(&result).
 		Post(rawURL)
 
-	//fmt.Printf("accessToken: %+v\n", resp)
+	//print log
+	restLog, _ := jsoniter.ConfigCompatibleWithStandardLibrary.Marshal(utils.GetRestyLog(resp))
+	cli.logger.Infof("PSPResty->%+v", string(restLog))
 
 	if err != nil {
 		return nil, err
+	}
+
+	if resp.StatusCode() != 200 {
+		//反序列化错误会在此捕捉
+		return nil, fmt.Errorf("status code: %d", resp.StatusCode())
 	}
 
 	if resp.Error() != nil {

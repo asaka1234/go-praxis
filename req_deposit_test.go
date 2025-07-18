@@ -9,9 +9,9 @@ import (
 )
 
 func TestDeposit(t *testing.T) {
-
+	vlog := VLog{}
 	//构造client
-	cli := NewClient(nil, &PraxisInitParams{MERCHANT_ID, MERCHANT_SECRET, APPLICATION_KEY, API_VERSION, API_LOCALE, SANDBOX_URL, DepositBackUrl, DepositFeBackUrl, WithdrawBackUrl, WithdrawFeBackUrl})
+	cli := NewClient(vlog, &PraxisInitParams{MERCHANT_ID, MERCHANT_SECRET, APPLICATION_KEY, API_VERSION, API_LOCALE, SANDBOX_URL, DepositBackUrl, DepositFeBackUrl, WithdrawBackUrl, WithdrawFeBackUrl})
 
 	//发请求
 	resp, err := cli.Deposit(GenDepositRequestDemo())
@@ -20,8 +20,6 @@ func TestDeposit(t *testing.T) {
 		return
 	}
 	fmt.Printf("===>%+v\n", resp)
-
-	fmt.Printf("resp:%s, %s\n", resp.RedirectURL, resp.Session.AuthToken)
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGKILL, syscall.SIGHUP)

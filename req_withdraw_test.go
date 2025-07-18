@@ -6,9 +6,9 @@ import (
 )
 
 func TestWithdraw(t *testing.T) {
-
+	vlog := VLog{}
 	//构造client
-	cli := NewClient(nil, &PraxisInitParams{MERCHANT_ID, MERCHANT_SECRET, APPLICATION_KEY, API_VERSION, API_LOCALE, SANDBOX_URL, DepositBackUrl, DepositFeBackUrl, WithdrawBackUrl, WithdrawFeBackUrl})
+	cli := NewClient(vlog, &PraxisInitParams{MERCHANT_ID, MERCHANT_SECRET, APPLICATION_KEY, API_VERSION, API_LOCALE, SANDBOX_URL, DepositBackUrl, DepositFeBackUrl, WithdrawBackUrl, WithdrawFeBackUrl})
 
 	//发请求
 	resp, err := cli.Withdraw(GenWithdrawRequestDemo())
